@@ -1,0 +1,54 @@
+version: '3.8'
+services:
+    wordpresspruebas:
+        container_name: wordpress
+        image: wordpress
+        deploy:
+            resources:
+                limits:
+                    memory: 1024M
+                reservations:
+                    memory: 500M
+        volumes:
+            - ./html:/var/www/html/
+        ports:
+            - 8080:80
+        environment:
+            WORDPRESS_DB_HOST: mysql
+            WORDPRESS_DB_NAME: wordpresspruebas
+            WORDPRESS_DB_USER: pruebas
+            WORDPRESS_DB_PASSWORD: secret
+    phpmyadmin:
+        container_name: phpmyadmin
+        image: phpmyadmin
+        deploy:
+            resources:
+                limits:
+                    memory: 1024M
+                reservations:
+                    memory: 50M
+        ports:
+            - 8081:80
+        environment:
+            PMA_HOST: mysql
+            PMA_USER: pruebas
+            PMA_PASSWORD: secret
+            MYSQL_PASSWORD: secret
+            MYSQL_ROOT_PASSWORD: secret
+            
+    mysql:
+        container_name: wordpressdb
+        image: mariadb
+        deploy:
+            resources:
+                limits:
+                    memory: 1024M
+                reservations:
+                    memory: 500M
+        volumes:
+            - ./data:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_DATABASE: wordpresspruebas
+            MYSQL_USER: pruebas
+            MYSQL_PASSWORD: secret
